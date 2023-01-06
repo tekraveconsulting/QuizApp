@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/user/quiz-app.git'
+                git 'https://github.com/rajshamz/quiz-app.git'
             }
         }
         stage('Build Docker Container') {
@@ -16,8 +16,8 @@ pipeline {
         stage('Deploy to Docker Host') {
             steps {
                 withDockerHost([
-                    credentialsId: 'my-docker-credentials',
-                    url: 'tcp://localhost:2376'
+                    url: 'unix:///var/run/docker.sock'
+
                 ]) {
                     script {
                         docker.image("quiz-app:latest").push("latest")
