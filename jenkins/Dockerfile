@@ -5,4 +5,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-CMD ["python", "lets-quiz/app.py"]
+CMD ["python", "/lets-quiz/app.py"]
