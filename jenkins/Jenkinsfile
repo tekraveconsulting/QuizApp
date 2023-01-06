@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        stage('Clone Repository') {
+        stage('Clone The Repository') {
             steps {
                 git 'https://github.com/rajshamz/quiz-app.git'
             }
