@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/user/quiz-app.git'
+            }
+        }
+        stage('Build Docker Container') {
+            steps {
+                script {
+                    def app = docker.build("quiz-app:latest", ".")
+                }
+            }
+        }
+        stage('Deploy to Docker Host') {
+            steps {
+                withDockerHost([
+                    credentialsId: 'my-docker-credentials',
+                    url: 'tcp://localhost:2376'
+                ]) {
+                    script {
+                        docker.image("quiz-app:latest").push("latest")
+                    }
+                }
+            }
+        }
+    }
+}
