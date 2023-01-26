@@ -1,24 +1,72 @@
+def AnsibleDeploy(){
+    sh 'touch hosts.ini && echo ${hosts_ini} | base64 --decode > hosts.ini'
+    sh 'ANSIBLE_HOST_KEY_CHECKING=false ansible-playbook -i hosts.ini ansible/playbook.yml'
+}
+
 pipeline {
-    agent any
+    environment {
+        IMG_TAG="${sh(script: 'echo \$GIT_COMMIT | cut -c -7 | tr -d \'[:space:]\' ', returnStdout: true ) }.$BUILD_ID"
+        APP_NAME="QuizApp"
+    }
+
+    agent {
+        dockerfile {
+            dir 'jenkins'
+        }
+    }
+
     stages {
         stage('Clone The Repository') {
             steps {
                 git 'https://github.com/tekraveconsulting/quizapp.git'
             }
         }
-        stage('Build Docker Container') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    def app = docker.build("quiz-app:latest", ".")
+                    QuizAppImage = docker.build("$APP_NAME:$IMG_TAG", "-f src/Dockerfile .")
                 }
             }
         }
         stage('Deploy to Docker Desktop') {
-            steps {
-                script {
-                    sh 'docker stop quiz-app || true'
-                    sh 'docker rm quiz-app || true'
-                    sh 'docker run --name quiz-app -d -p 8099:80 quiz-app:latest'
+            when {
+              anyOf {
+                 branch 'master'
+                 branch 'dev'
+              }
+           }
+            steps{
+                script{
+                    switch(BRANCH_NAME) {
+                      case ["master", "dev"]:  // Deployment steps for Master and Dev
+                        env.DOCKER_REGISTRY        = "https://192.168.0.120:4443"
+                        env.DOCKER_REGISTRY_HOST   = "192.168.0.120"
+                        env.DOCKER_REGISTRY_SECRET = "DockerRegistry"
+
+                        docker.withRegistry('https://192.168.0.120:4443', 'DockerRegistry') {
+                            QuizAppImage.push()
+                        }
+
+                        withCredentials([usernamePassword(credentialsId: 'DockerRegistry', passwordVariable: 'REGISTRY_PASS', usernameVariable: 'REGISTRY_USER')]) {
+                            AnsibleDeploy()
+                        }
+                        break
+
+                      default: // Deployment steps for other branches
+                        env.DOCKER_REGISTRY        = "https://192.168.0.120:4443"
+                        env.DOCKER_REGISTRY_HOST   = "https://192.168.0.120"
+                        env.DOCKER_REGISTRY_SECRET = "DockerRegistry"
+
+                        docker.withRegistry('https://192.168.0.120:4443 ', 'DockerRegistry') {
+                            QuizAppImage.push()
+                            
+                        }
+
+                        withCredentials([usernamePassword(credentialsId: 'DockerRegistry', passwordVariable: 'REGISTRY_PASS', usernameVariable: 'REGISTRY_USER')]) {
+                            AnsibleDeploy()
+                        }
+                        break
+                    }
                 }
             }
         }
