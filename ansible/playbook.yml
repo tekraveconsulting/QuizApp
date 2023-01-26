@@ -1,0 +1,7 @@
+- hosts: servers
+  become: true
+  remote_user: ansibledeploy
+  vars_files:
+    - ./vars/main.yaml
+  roles:
+    - docker-deploy

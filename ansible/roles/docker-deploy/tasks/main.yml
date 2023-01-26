@@ -1,0 +1,44 @@
+- name: Add user to docker group
+  become: true
+  shell: |
+    usermod -aG docker $USER
+- name: Log into private registry
+  become: true
+  docker_login:
+    registry: "{{ lookup('env', 'DOCKER_REGISTRY') }}"
+    username: "{{ lookup('env', 'REGISTRY_USER') }}"
+    password: "{{ lookup('env', 'REGISTRY_PASS') }}"
+
+- name: Pull images from private repo
+  become: true
+  docker_image:
+    name: "{{item}}"
+    tag: "{{ lookup('env', 'IMG_TAG') }}"
+    source: pull
+  loop:
+    - "{{ lookup('env', 'DOCKER_REGISTRY_HOST') }}/{{APP_NAME}}"
+
+- name: Get status on the previous container
+  become: true
+  docker_container_info:
+    name: "{{ APP_NAME }}"
+  register: result
+
+- name: Remove previous container if it exists
+  become: true
+  when: result.exists
+  docker_container:
+    name: "{{ APP_NAME }}"
+    state: absent
+
+
+- name: Running container
+  become: true
+  docker_container:
+    image: "{{ lookup('env', 'DOCKER_REGISTRY_HOST') }}/{{ APP_NAME ~ COLON ~ IMG_TAG }}"
+    state: started
+    name: "{{ APP_NAME }}"
+    published_ports: "{{ HOST_PORT ~ COLON ~ CONTAINER_PORT }}"
+    restart_policy: always
+    volumes:
+      - "{{ APP_LOGS }}:/var/log"

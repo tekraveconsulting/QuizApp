@@ -1,0 +1,13 @@
+---
+APP_NAME: QuizApp
+IMG_TAG: "{{ lookup('env', 'IMG_TAG') }}"
+COLON: ":"
+CONTAINER_PORT: "{{ lookup('env', 'CONTAINER_PORT') }}"
+HOST_PORT: "{{ lookup('env', 'HOST_PORT') }}"
+APP_LOGS: "{{ lookup('env', 'APP_LOGS') }}"
+
+##LOGGING##
+## Branch is also a logging parameter ##
+#LOGS_DIR: "{{ lookup('env', 'LOGS_DIR') }}"
+#LOGS_BROKER: "{{ lookup('env', 'LOGS_BROKER') }}"
+#LOGS_INDEX: "{{ lookup('env', 'LOGS_INDEX') }}"
