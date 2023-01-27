@@ -1,8 +1,9 @@
 pipeline {
     
     agent {
-        dockerfile {
-            dir 'jenkins'
+        docker {
+            image 'python:3.8-slim-buster'
+            args '--file Dockerfile'
         }
     }
     stages {
