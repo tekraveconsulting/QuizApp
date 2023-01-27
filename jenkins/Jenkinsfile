@@ -2,12 +2,12 @@ pipeline {
     
     agent any
 
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git url: 'https://github.com/tekraveconsulting/quizapp.git', credentialsId: 'gitHubToken'
-            }
-        }
+    //stages {
+    //    stage('Clone Repository') {
+    //        steps {
+    //            git url: 'https://github.com/tekraveconsulting/quizapp.git', credentialsId: 'gitHubToken'
+    //        }
+    //    }
         //stage('Build') {
         //    steps {
         //        sh 'pip install -r requirements.txt'
@@ -37,5 +37,5 @@ pipeline {
         //        }
         //    }
         //}
-    }
+    //}
 }
