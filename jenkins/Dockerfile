@@ -1,6 +1,6 @@
 #Jenkins base image.
 
-FROM node:14.20 AS builder
+FROM node:19.5 AS builder
 
 ENV WORKING_DIR=/usr/app/src/
 ENV CHROME_BIN=/usr/bin/google-chrome
