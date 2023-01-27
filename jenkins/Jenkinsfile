@@ -1,9 +1,8 @@
 pipeline {
     
     agent {
-        docker {
-            image 'node:14.20'
-            args '--file Dockerfile'
+        dockerfile {
+            dir 'jenkins'
         }
     }
     stages {
