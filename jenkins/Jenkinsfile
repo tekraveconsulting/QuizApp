@@ -13,12 +13,12 @@ pipeline {
                 sh 'ls && pwd'
             }
         }
-        //stage('Build') {
-        //    steps {
-        //        sh 'pip install -r requirements.txt'
-        //        sh 'python setup.py sdist bdist_wheel'
-        //    }
-        //}
+        stage('Build') {
+            steps {
+                sh 'pip install -r requirements.txt'
+                sh 'python setup.py sdist bdist_wheel'
+            }
+        }
         //stage('Deploy to Artifactory') {
         //    steps {
         //        withCredentials([usernamePassword(credentialsId: 'your-artifactory-credentials-id', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
