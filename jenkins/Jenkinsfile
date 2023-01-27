@@ -2,7 +2,7 @@ pipeline {
     
     agent {
         docker {
-            image 'python:3.8-slim-buster'
+            image 'node:14.20'
             args '--file Dockerfile'
         }
     }
