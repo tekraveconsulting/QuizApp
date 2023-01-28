@@ -44,7 +44,6 @@ pipeline {
                         withCredentials([file(credentialsId: 'quizapp-master', variable: 'PIPELINE_ENV')]) { load "$PIPELINE_ENV"}
                         sh 'echo pwd'
                     }
-                }
             steps {
                 script {
                     switch(BRANCH_NAME) {
