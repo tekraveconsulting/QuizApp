@@ -23,8 +23,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'sudo pip3 install --user -r requirements.txt'
-                sh 'sudo python3 --user setup.py sdist bdist_wheel'
+                sh 'sudo pip3 install -r requirements.txt'
+                sh 'sudo python3 setup.py sdist bdist_wheel'
             }
         }
         //stage('Deploy to Artifactory') {
