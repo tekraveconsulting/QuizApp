@@ -23,8 +23,9 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'sudo -H pip3 install -r requirements.txt'
-                sh 'sudo -H python3 setup.py sdist bdist_wheel'
+                script {
+                    def app = docker.build("quiz-app:latest", ".")
+                }
             }
         }
         //stage('Deploy to Artifactory') {
