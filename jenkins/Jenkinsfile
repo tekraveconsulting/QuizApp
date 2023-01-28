@@ -64,7 +64,7 @@ pipeline {
                     switch(BRANCH_NAME) {
                       case ["master", "dev"]:  // Deployment steps for Master and Dev
                         env.DOCKER_REGISTRY        = "https://192.168.0.120:4443"
-                        env.DOCKER_REGISTRY_HOST   = "192.168.0.120"
+                        env.DOCKER_REGISTRY_HOST   = "192.168.0.120:4443"
                         env.DOCKER_REGISTRY_SECRET = "DockerRegistry"
 
                         docker.withRegistry('https://192.168.0.120:4443', 'DockerRegistry') {
