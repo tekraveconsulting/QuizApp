@@ -4,12 +4,12 @@ pipeline {
     //    IMG_TAG="${sh(script: 'echo \$GIT_COMMIT | cut -c -7 | tr -d \'[:space:]\' ', returnStdout: true ) }.$BUILD_ID"
     //    APP_NAME="quizapp"
     //}
-    //agent any
-    agent {
-        dockerfile {
-            dir 'jenkins'
-        }
-    }
+    agent any
+    //agent {
+    //    dockerfile {
+    //        dir 'jenkins'
+    //    }
+    //}
     stages {
         //stage('Clone Repository') {
         //    steps {
