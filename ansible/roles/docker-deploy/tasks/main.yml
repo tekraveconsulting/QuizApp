@@ -1,7 +1,7 @@
 - name: Add user to docker group
   become: true
   shell: |
-    usermod -aG dockerroot $USER
+    usermod -aG docker $USER
 - name: Log into private registry
   become: true
   docker_login:
