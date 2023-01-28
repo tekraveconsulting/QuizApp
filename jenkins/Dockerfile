@@ -13,7 +13,7 @@ RUN echo 'deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main' >> /e
 && apt update \
 && apt install -y ansible sshpass
 
-RUN apt install -y python-pip python3-pip && \
+RUN apt install -y python3-pip && \
 pip install docker
 
 RUN apt-get install -y apt-transport-https ca-certificates curl unzip software-properties-common && \
