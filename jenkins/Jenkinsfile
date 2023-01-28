@@ -1,8 +1,8 @@
 pipeline {
     
-    environment {
-        IMG_TAG="${sh(script: 'echo \$GIT_COMMIT | cut -c -7 | tr -d \'[:space:]\' ', returnStdout: true ) }.$BUILD_ID"
-        APP_NAME="quizapp"
+    //environment {
+    //    IMG_TAG="${sh(script: 'echo \$GIT_COMMIT | cut -c -7 | tr -d \'[:space:]\' ', returnStdout: true ) }.$BUILD_ID"
+    //    APP_NAME="quizapp"
     }
     //agent any
     agent {
@@ -23,9 +23,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-                script {
-                    QuizAppImage = docker.build("$APP_NAME:$IMG_TAG", "-f ./Dockerfile .")
-                }
+                sh 'pip install -r requirements.txt'
+                sh 'python setup.py sdist bdist_wheel'
             }
         }
         //stage('Deploy to Artifactory') {
