@@ -18,7 +18,7 @@ pipeline {
         //}
         stage('Check') {
             steps {
-                sh 'ls && pwd'
+                sh 'ls && pwd && id'
             }
         }
         stage('Build') {
