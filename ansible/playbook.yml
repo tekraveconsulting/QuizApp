@@ -1,6 +1,6 @@
 - hosts: servers
   become: true
-  remote_user: ansibledeploy
+  remote_user: ansibledeployer
   vars_files:
     - ./vars/main.yaml
   roles:
