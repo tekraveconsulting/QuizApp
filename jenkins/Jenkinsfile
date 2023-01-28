@@ -26,25 +26,6 @@ pipeline {
                 sh 'ls && pwd'
             }
         }
-        stage('Inject environment Variables') {
-            parallel{
-                stage('to dev') {
-                    when { branch 'dev' }
-                    steps {
-                        withCredentials([file(credentialsId: 'quizapp-dev', variable: 'PIPELINE_ENV')]) { load "$PIPELINE_ENV"}
-                        InjectVariables()
-                    }
-                }
-
-                stage('master'){
-                    when {branch 'master'}
-                    steps{
-                        withCredentials([file(credentialsId: 'quizapp-master', variable: 'PIPELINE_ENV')]) { load "$PIPELINE_ENV"}
-                        InjectVariables()
-                    }
-                }
-            }
-        }
         stage('Build') {
             steps {
                 script {
