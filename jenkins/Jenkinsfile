@@ -24,7 +24,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    QuizAppImage = docker.build("$APP_NAME:$IMG_TAG", ".")
+                    QuizAppImage = docker.build("$APP_NAME:$IMG_TAG", "-f Dockerfile .")
                 }
             }
         }
