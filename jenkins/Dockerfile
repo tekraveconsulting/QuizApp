@@ -4,7 +4,7 @@ FROM node:17 AS builder
 
 ENV WORKING_DIR=/usr/app/src/
 ENV CHROME_BIN=/usr/bin/google-chrome
-
+ENV DOCKER_HOST=unix:///var/run/docker.sock
 
 WORKDIR ${WORKING_DIR}
 
